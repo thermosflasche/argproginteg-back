@@ -48,18 +48,18 @@ public class SobreMiControlador {
     }
     
     @DeleteMapping("borrar/{id}")
-    public String borrar(@PathVariable Integer id){
+    public String borrar(@PathVariable("id") Integer id){
         interSobreMi.borrar(id);
         return "Registro SobreMi borrado correctamente.";
     }
     
     @GetMapping("buscar/{id}")
-    public SobreMi buscar(@PathVariable Integer id){
+    public SobreMi buscar(@PathVariable("id") Integer id){
         return interSobreMi.buscar(id);
     }
     
     @PutMapping("editar/{id}")
-    public SobreMi editar(@PathVariable Integer id,
+    public SobreMi editar(@PathVariable("id") Integer id,
             @RequestParam (name = "titulo", required = false) String nTitulo,
             @RequestParam (name = "info", required = false) String nInfo){
         SobreMi s = interSobreMi.buscar(id);

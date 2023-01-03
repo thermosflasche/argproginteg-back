@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/estudio")
 public class EstudioControlador {
+    
     @Autowired
     private IEstudioServicio interEstudio;
 
@@ -48,18 +49,18 @@ public class EstudioControlador {
     }
     
     @DeleteMapping("borrar/{id}")
-    public String borrar(@PathVariable Integer id){
+    public String borrar(@PathVariable("id") Integer id){
         interEstudio.borrar(id);
         return "Estudio borrado correctamente.";
     }
     
     @GetMapping("buscar/{id}")
-    public Estudio buscar(@PathVariable Integer id){
+    public Estudio buscar(@PathVariable("id") Integer id){
         return interEstudio.buscar(id);
     }
     
     @PutMapping("editar/{id}")
-    public Estudio editar(@PathVariable Integer id,
+    public Estudio editar(@PathVariable("id") Integer id,
             @RequestParam (name = "titulo", required = false) String nTitulo,
             @RequestParam (name = "descripcion", required = false) String nDescripcion,
             @RequestParam (name = "anno", required = false) Integer nAnno,

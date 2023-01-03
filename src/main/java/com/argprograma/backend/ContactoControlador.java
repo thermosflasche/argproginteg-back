@@ -48,18 +48,18 @@ public class ContactoControlador {
     }
     
     @DeleteMapping("borrar/{id}")
-    public String borrar(@PathVariable Integer id){
+    public String borrar(@PathVariable("id") Integer id){
         interContacto.borrar(id);
         return "Contacto borrado correctamente.";
     }
     
     @GetMapping("buscar/{id}")
-    public Contacto buscar(@PathVariable Integer id){
+    public Contacto buscar(@PathVariable("id") Integer id){
         return interContacto.buscar(id);
     }
     
     @PutMapping("editar/{id}")
-    public Contacto editar(@PathVariable Integer id,
+    public Contacto editar(@PathVariable("id") Integer id,
             @RequestParam (name = "nombre", required = false) String nNombre,
             @RequestParam (name = "contacto", required = false) String nContacto){
         Contacto c = interContacto.buscar(id);
