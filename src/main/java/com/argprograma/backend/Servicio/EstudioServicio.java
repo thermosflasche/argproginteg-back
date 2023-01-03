@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.argprograma.backend.Repositorio.EstudioRepositorio;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class EstudioServicio implements IEstudioServicio {
@@ -29,7 +30,8 @@ public class EstudioServicio implements IEstudioServicio {
 
     @Override
     public List<Estudio> traer() {
-        return eRepo.findAll();
+        return eRepo.findAll(Sort.by(
+                Sort.Direction.ASC, "anno"));
     }
 
     @Override
