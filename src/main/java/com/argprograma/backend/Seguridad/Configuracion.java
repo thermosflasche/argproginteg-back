@@ -13,7 +13,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
-
 package com.argprograma.backend.Seguridad;
 
 import com.argprograma.backend.Servicio.DetallesUsuarioServicio;
@@ -28,23 +27,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @AllArgsConstructor
-public class Configuracion {
-    
+public class Configuracion implements WebMvcConfigurer {
+
     private final DetallesUsuarioServicio duServicio;
     private final JWTFiltroAutorizacion jwtFiltroAutorizacion;
-    
+
     // Configuración de seguridad
     @Bean
-    SecurityFilterChain cadenaFiltros(HttpSecurity seg, AuthenticationManager gestor) throws Exception{
-        
+    SecurityFilterChain cadenaFiltros(HttpSecurity seg, AuthenticationManager gestor) throws Exception {
+
         JWTFiltroAutenticacion jwtFiltroAutenticacion = new JWTFiltroAutenticacion();
         jwtFiltroAutenticacion.setAuthenticationManager(gestor);
         jwtFiltroAutenticacion.setFilterProcessesUrl("/login");
-        
-        return seg.csrf().disable()
+
+        return seg
+                .cors()
+                .and()
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -52,17 +55,17 @@ public class Configuracion {
                 .addFilterBefore(jwtFiltroAutorizacion, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-    
+
     @Bean
-    AuthenticationManager gestorAutenticacion(HttpSecurity seg) throws Exception{
+    AuthenticationManager gestorAutenticacion(HttpSecurity seg) throws Exception {
         return seg.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(duServicio)
                 .passwordEncoder(codificador())
                 .and().build();
     }
-    
+
     @Bean
-    PasswordEncoder codificador(){
+    PasswordEncoder codificador() {
         return new BCryptPasswordEncoder();
     }
 }
